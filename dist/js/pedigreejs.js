@@ -3168,7 +3168,7 @@ import * as d3 from '../node_modules/d3';
 			widgets.settings = {'text': '\uf013', 'title': 'settings', 'fx': -font_size/2+2, 'fy': -opts.symbol_size + 11};
 		}
 
-		for(var key in widgets) {
+		for(let key in widgets) {
 			var widget = node.append("text")
 				.filter(function (d) {
 					return  (d.data.hidden && !opts.DEBUG ? false : true) &&

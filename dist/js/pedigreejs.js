@@ -3275,6 +3275,13 @@ import * as d3 from '../node_modules/d3';
 		// handle widget clicks
 		d3.selectAll(".addchild, .addpartner, .addparents, .delete, .settings")
 			.on("click", function () {
+			
+			
+			
+				tooltip_div.transition()
+					.duration(200)
+					.style("opacity", 0);
+			
 				d3.event.stopPropagation();
 				var opt = d3.select(this).attr('class');
 				var d = d3.select(this.parentNode).datum();

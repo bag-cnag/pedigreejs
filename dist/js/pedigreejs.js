@@ -3220,7 +3220,7 @@ import * as d3 from '../node_modules/d3';
 					widget.attr(style, widgets[key].styles[style]);
 				}
 
-			widget.append("svg:title").text(widgets[key].title);
+			//widget.append("svg:title").text(widgets[key].title);
 			off += 17;
 		}
 

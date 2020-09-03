@@ -904,6 +904,46 @@ import * as d3 from '../node_modules/d3';
 			}
 		});
 
+		//Check consanguinity from saved dataset
+		let only_cons = []
+		for (var i = 0; i < opts.dataset.length; i++) {
+			if ("consanguinity" in opts.dataset[i]){
+				only_cons.push(opts.dataset[i])
+				//let cons_node = (pedcop.find(o => o.name === opts.consanguinity_pairs[i][j]))
+
+			}
+		  }
+		
+		let fin_pair = []
+		
+		for (var i = 0; i < only_cons.length; i++) {
+		  let arr_pair = [] 
+
+		  let pair = only_cons.filter(item => item.consanguinity == i);
+		  for (var j = 0; j < pair.length; j++) { 
+			  arr_pair.push(pair[j].name) 
+		  }
+		  
+		  if (arr_pair.length > 0)
+		      fin_pair.push(arr_pair)
+		}
+
+		
+		//Mark consanguinity
+		//if ((opts.consanguinity_pairs.length == 0) && (fin_pair.length != 0)){
+		//	opts.consanguinity_pairs = fin_pair
+		//}
+
+		if ((opts.consanguinity_pairs.length != 0) && (fin_pair.length != 0)){
+			for (var j = 0; j < fin_pair.length; j++) {
+			    opts.consanguinity_pairs.push(fin_pair[j])
+			}
+		}
+
+		//Remove duplicates
+		//opts.consanguinity_pairs = opts.consanguinity_pairs.filter(( t={}, a=> !(t[a]=a in t) ));
+
+
 		opts.consanguinity_pairs.forEach(function(couple){
 			if(couple.includes(node1.data.name))
 			{
@@ -911,6 +951,17 @@ import * as d3 from '../node_modules/d3';
 				return false;
 			}
 		});
+		
+		if ((opts.consanguinity_pairs.length == 0) && (fin_pair.length != 0)){
+			fin_pair.forEach(function(couple){
+			if(couple.includes(node1.data.name))
+			{
+				consanguinity=true;
+				return false;
+			}
+		});
+	   }
+
 
 
 		console.log("Consanguinity: " + consanguinity);
@@ -3275,13 +3326,11 @@ import * as d3 from '../node_modules/d3';
 		// handle widget clicks
 		d3.selectAll(".addchild, .addpartner, .addparents, .delete, .settings")
 			.on("click", function () {
-			
-			
-			
+
 				tooltip_div.transition()
 					.duration(200)
 					.style("opacity", 0);
-			
+
 				d3.event.stopPropagation();
 				var opt = d3.select(this).attr('class');
 				var d = d3.select(this.parentNode).datum();

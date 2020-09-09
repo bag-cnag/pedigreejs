@@ -765,7 +765,8 @@ import * as d3 from '../node_modules/d3';
 
 	pedigree_util.getChildren = function(dataset, mother, father) {
 		var children = [];
-		if(mother.sex === 'F')
+		// *Create children even if the 'mother' is defined as male or unknown. If no, children nodes disappear 
+		//if(mother.sex === 'F')
 			$.each(dataset, function(i, p) {
 				if(mother.name === p.mother)
 					if(!father || father.name == p.father)

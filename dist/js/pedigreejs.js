@@ -1201,6 +1201,9 @@ import * as d3 from '../node_modules/d3';
 			node_background: '#fdfdfd',
 			validate: true,
 			DEBUG: false}, options );
+		
+		opts.width = (document.getElementById(opts.targetDiv) !== null) ? document.getElementById(opts.targetDiv).offsetWidth : opts.width;
+		opts.height = (document.getElementById(opts.targetDiv) !== null) ? opts.height : opts.height;
 
 		if ( $( "#fullscreen" ).length === 0 ) {
 			// add undo, redo, fullscreen buttons and event listeners once

@@ -1881,12 +1881,14 @@ import * as d3 from '../node_modules/d3';
 				maxscore = generation[depth];
 		}
 
+		// skip this maxscore thing as it makes tree larger than container;
 		var max_depth = Object.keys(generation).length*opts.symbol_size*3.5;
 		var tree_width =  (svg_dimensions.width - opts.symbol_size > maxscore*opts.symbol_size*1.65 ?
 			svg_dimensions.width - opts.symbol_size : maxscore*opts.symbol_size*1.65);
 		var tree_height = (svg_dimensions.height - opts.symbol_size > max_depth ?
 			svg_dimensions.height - opts.symbol_size : max_depth);
-		return {'width': tree_width, 'height': tree_height};
+		//return {'width': tree_width, 'height': tree_height};
+		return {'width': svg_dimensions.width, 'height': svg_dimensions.height};
 	};
 
 	// get the partners for a given node

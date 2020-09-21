@@ -1248,7 +1248,7 @@ import * as d3 from '../node_modules/d3';
 
 		if(xtransform === null) {
 			xtransform = opts.symbol_size/2;
-			ytransform = (-opts.symbol_size*2);
+			ytransform = (-opts.symbol_size*1.5);
 		}
 		var ped = svg.append("g")
 			.attr("class", "diagram")
@@ -1957,8 +1957,8 @@ import * as d3 from '../node_modules/d3';
 			return d.data.hidden && !opts.DEBUG ? false : true;
 		}).append("text")
 			.attr("class", class_label + ' ped_label' || "ped_label")
-			.attr("x", -100)
-			.attr("y",  80)
+			.attr("x", 40)
+			.attr("y",  20)
 			//.attr("dy", size)
 			.attr("font-family", opts.font_family)
 			.attr("font-size", opts.font_size)

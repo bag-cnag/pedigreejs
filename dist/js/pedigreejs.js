@@ -272,119 +272,135 @@ import * as d3 from '../node_modules/d3';
 		var mot_id = "NA";
 		var sex = "NA";
 		var affected_status = "NA";
-
+	
 		var line = "";
-
+	
 		for (var i=0; i < opts.dataset.length; i++) {
-
+	
 			if ("parent_node" in opts.dataset[i]) {
 				delete opts.dataset[i].parent_node;
 			}
-
+	
 			if ("report_id" in opts.dataset[i]) {
 				fam_id = opts.dataset[i].report_id;
 			}
-
+	
 			if ("display_name" in opts.dataset[i]) {
-
+	
 				if (opts.dataset[i].display_name != "")
 					ind_id = opts.dataset[i].display_name;
-
+	
 				else {
 					if ("name" in opts.dataset[i])
 						ind_id = opts.dataset[i].name;
 				}
 			}
-
+	
 			else if ("name" in opts.dataset[i]) {
 				ind_id = opts.dataset[i].name;
 			}
-
+	
 			if ("father" in opts.dataset[i]) {
 				let tmp_pat_id = opts.dataset[i].father;
 				let obj = opts.dataset.find(o => o.name === tmp_pat_id);
-
+	
 				if (obj != undefined) {
-					if ("display_name" in obj)
-						pat_id = obj.display_name
+					if ("display_name" in obj){
+						if (obj.display_name != "")
+							pat_id = obj.display_name
+						else
+							pat_id = obj.name
+					}
 					else
 						pat_id = obj.name
 				}
-
+	
 				else {
 					if (tmp_pat_id !=undefined)
 						pat_id = tmp_pat_id
-
+	
 					else
 						pat_id = 0
 				}
 			}
-
+	
 			else
 				pat_id = 0
-
+	
 			if ("mother" in opts.dataset[i]) {
 				let tmp_mot_id = opts.dataset[i].mother;
 				let obj = opts.dataset.find(o => o.name === tmp_mot_id);
-
+	
 				if (obj != undefined) {
-					if ("display_name" in obj)
-						mot_id = obj.display_name
+					if ("display_name" in obj){
+						if (obj.display_name != "")
+							mot_id = obj.display_name
+						else
+							mot_id = obj.name
+					}
 					else
 						mot_id = obj.name
 				}
-
+	
 				else  {
 					if (tmp_mot_id !=undefined)
 						mot_id = tmp_mot_id
-
+	
 					else
 						mot_id = 0
 				}
 			}
-
+	
 			else
 				mot_id = 0
-
+			
+	
+			if ("noparents" in opts.dataset[i]){
+				if (opts.dataset[i].noparents){
+					pat_id = 0
+					mot_id = 0
+				}
+			}
+	
 			if ("sex" in opts.dataset[i]) {
 				if (opts.dataset[i].sex == "M")
 					sex = 1;
-
+	
 				else if (opts.dataset[i].sex == "F")
 					sex = 2;
-
+	
 				else
 					sex = 0;
 			}
-
+	
 			if ("affected" in opts.dataset[i]) {
 				if (opts.dataset[i].affected == true)
 					affected_status = 2
 			}
-
+	
 			else if ("unaffected" in opts.dataset[i]) {
 				if (opts.dataset[i].unaffected == true)
 					affected_status = 1
 			}
-
+	
 			else
 				affected_status = 0
-
-
+	
+	
 			var fields = fam_id + " " + ind_id + " " + pat_id  + " " + mot_id  + " " + sex + " " + affected_status + "\n"
-
+	
 			line += fields
 		}
-
+	
 		var content = line;
-
+	
 		var ped_id = opts.dataset[0].report_id;
-
+	
 		var link = document.createElement("a");
 		link.download = ped_id + ".ped";
 		link.href = "data:application/txt;charset=utf-8," + encodeURIComponent(content);;
 		link.click();
-
+	
 		if(opts.DEBUG)
 			console.log(content);
 	};

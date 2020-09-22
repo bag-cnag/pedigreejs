@@ -1967,14 +1967,15 @@ import * as d3 from '../node_modules/d3';
 		return hgt;
 	};
 
-	// Add label
+	
+	// Add Participant ID Label
 	function addLabel(opts, node, size, fx, fy, ftext, class_label) {
 		node.filter(function (d) {
-			return d.data.hidden && !opts.DEBUG ? false : true;
+			return !(d.data.hidden && !opts.DEBUG);
 		}).append("text")
 			.attr("class", class_label + ' ped_label' || "ped_label")
-			.attr("x", 40)
-			.attr("y",  20)
+			.attr("x", -80)
+			.attr("y",  -30)
 			//.attr("dy", size)
 			.attr("font-family", opts.font_family)
 			.attr("font-size", opts.font_size)

@@ -272,38 +272,38 @@ import * as d3 from '../node_modules/d3';
 		var mot_id = "NA";
 		var sex = "NA";
 		var affected_status = "NA";
-	
+
 		var line = "";
-	
+
 		for (var i=0; i < opts.dataset.length; i++) {
-	
+
 			if ("parent_node" in opts.dataset[i]) {
 				delete opts.dataset[i].parent_node;
 			}
-	
+
 			if ("report_id" in opts.dataset[i]) {
 				fam_id = opts.dataset[i].report_id;
 			}
-	
+
 			if ("display_name" in opts.dataset[i]) {
-	
+
 				if (opts.dataset[i].display_name != "")
 					ind_id = opts.dataset[i].display_name;
-	
+
 				else {
 					if ("name" in opts.dataset[i])
 						ind_id = opts.dataset[i].name;
 				}
 			}
-	
+
 			else if ("name" in opts.dataset[i]) {
 				ind_id = opts.dataset[i].name;
 			}
-	
+
 			if ("father" in opts.dataset[i]) {
 				let tmp_pat_id = opts.dataset[i].father;
 				let obj = opts.dataset.find(o => o.name === tmp_pat_id);
-	
+
 				if (obj != undefined) {
 					if ("display_name" in obj){
 						if (obj.display_name != "")
@@ -314,23 +314,23 @@ import * as d3 from '../node_modules/d3';
 					else
 						pat_id = obj.name
 				}
-	
+
 				else {
 					if (tmp_pat_id !=undefined)
 						pat_id = tmp_pat_id
-	
+
 					else
 						pat_id = 0
 				}
 			}
-	
+
 			else
 				pat_id = 0
-	
+
 			if ("mother" in opts.dataset[i]) {
 				let tmp_mot_id = opts.dataset[i].mother;
 				let obj = opts.dataset.find(o => o.name === tmp_mot_id);
-	
+
 				if (obj != undefined) {
 					if ("display_name" in obj){
 						if (obj.display_name != "")
@@ -341,66 +341,66 @@ import * as d3 from '../node_modules/d3';
 					else
 						mot_id = obj.name
 				}
-	
+
 				else  {
 					if (tmp_mot_id !=undefined)
 						mot_id = tmp_mot_id
-	
+
 					else
 						mot_id = 0
 				}
 			}
-	
+
 			else
 				mot_id = 0
-			
-	
+
+
 			if ("noparents" in opts.dataset[i]){
 				if (opts.dataset[i].noparents){
 					pat_id = 0
 					mot_id = 0
 				}
 			}
-	
+
 			if ("sex" in opts.dataset[i]) {
 				if (opts.dataset[i].sex == "M")
 					sex = 1;
-	
+
 				else if (opts.dataset[i].sex == "F")
 					sex = 2;
-	
+
 				else
 					sex = 0;
 			}
-	
+
 			if ("affected" in opts.dataset[i]) {
 				if (opts.dataset[i].affected == true)
 					affected_status = 2
 			}
-	
+
 			else if ("unaffected" in opts.dataset[i]) {
 				if (opts.dataset[i].unaffected == true)
 					affected_status = 1
 			}
-	
+
 			else
 				affected_status = 0
-	
-	
+
+
 			var fields = fam_id + " " + ind_id + " " + pat_id  + " " + mot_id  + " " + sex + " " + affected_status + "\n"
-	
+
 			line += fields
 		}
-	
+
 		var content = line;
-	
+
 		var ped_id = opts.dataset[0].report_id;
-	
+
 		var link = document.createElement("a");
 		link.download = ped_id + ".ped";
 		link.href = "data:application/txt;charset=utf-8," + encodeURIComponent(content);;
 		link.click();
-	
+
 		if(opts.DEBUG)
 			console.log(content);
 	};
@@ -781,13 +781,13 @@ import * as d3 from '../node_modules/d3';
 
 	pedigree_util.getChildren = function(dataset, mother, father) {
 		var children = [];
-		// *Create children even if the 'mother' is defined as male or unknown. If no, children nodes disappear 
+		// *Create children even if the 'mother' is defined as male or unknown. If no, children nodes disappear
 		//if(mother.sex === 'F')
-			$.each(dataset, function(i, p) {
-				if(mother.name === p.mother)
-					if(!father || father.name == p.father)
-						children.push(p);
-			});
+		$.each(dataset, function(i, p) {
+			if(mother.name === p.mother)
+				if(!father || father.name == p.father)
+					children.push(p);
+		});
 		return children;
 	};
 
@@ -929,23 +929,23 @@ import * as d3 from '../node_modules/d3';
 				//let cons_node = (pedcop.find(o => o.name === opts.consanguinity_pairs[i][j]))
 
 			}
-		  }
-		
-		let fin_pair = []
-		
-		for (var i = 0; i < only_cons.length; i++) {
-		  let arr_pair = [] 
-
-		  let pair = only_cons.filter(item => item.consanguinity == i);
-		  for (var j = 0; j < pair.length; j++) { 
-			  arr_pair.push(pair[j].name) 
-		  }
-		  
-		  if (arr_pair.length > 0)
-		      fin_pair.push(arr_pair)
 		}
 
-		
+		let fin_pair = []
+
+		for (var i = 0; i < only_cons.length; i++) {
+			let arr_pair = []
+
+			let pair = only_cons.filter(item => item.consanguinity == i);
+			for (var j = 0; j < pair.length; j++) {
+				arr_pair.push(pair[j].name)
+			}
+
+			if (arr_pair.length > 0)
+				fin_pair.push(arr_pair)
+		}
+
+
 		//Mark consanguinity
 		//if ((opts.consanguinity_pairs.length == 0) && (fin_pair.length != 0)){
 		//	opts.consanguinity_pairs = fin_pair
@@ -953,7 +953,7 @@ import * as d3 from '../node_modules/d3';
 
 		if ((opts.consanguinity_pairs.length != 0) && (fin_pair.length != 0)){
 			for (var j = 0; j < fin_pair.length; j++) {
-			    opts.consanguinity_pairs.push(fin_pair[j])
+				opts.consanguinity_pairs.push(fin_pair[j])
 			}
 		}
 
@@ -968,16 +968,16 @@ import * as d3 from '../node_modules/d3';
 				return false;
 			}
 		});
-		
+
 		if ((opts.consanguinity_pairs.length == 0) && (fin_pair.length != 0)){
 			fin_pair.forEach(function(couple){
-			if(couple.includes(node1.data.name))
-			{
-				consanguinity=true;
-				return false;
-			}
-		});
-	   }
+				if(couple.includes(node1.data.name))
+				{
+					consanguinity=true;
+					return false;
+				}
+			});
+		}
 
 
 
@@ -1217,7 +1217,7 @@ import * as d3 from '../node_modules/d3';
 			node_background: '#fdfdfd',
 			validate: true,
 			DEBUG: false}, options );
-		
+
 		opts.width = (document.getElementById(opts.targetDiv) !== null) ? document.getElementById(opts.targetDiv).offsetWidth : opts.width;
 		opts.height = (document.getElementById(opts.targetDiv) !== null) ? opts.height : opts.height;
 
@@ -1314,6 +1314,9 @@ import * as d3 from '../node_modules/d3';
 				return "translate(" + d.x + "," + d.y + ")";
 			});
 
+		let participant_url = window.location.hash;
+		let par_id = participant_url.substring(participant_url.lastIndexOf("/") + 1);
+
 		// provide a border to the node
 		node.append("path")
 			.filter(function (d) {return !d.data.hidden;})
@@ -1327,9 +1330,14 @@ import * as d3 from '../node_modules/d3';
 			.style("stroke", function (d) {
 				return d.data.age && d.data.yob && !d.data.exclude ? "#303030" : "#4575B4";
 			})
-			.style("stroke-width", function (d) {
-				return d.data.age && d.data.yob && !d.data.exclude ? ".4em" : ".3em";
-			})
+			.style("stroke-width", function(d){
+					if(par_id!== undefined && d.data.display_name=== par_id)
+					{return ".7em";}
+					else
+					{
+						return d.data.age && d.data.yob && !d.data.exclude ? ".4em" : ".3em";
+					}
+				})
 			.style("stroke-dasharray", function (d) {return !d.data.exclude ? null : ("3, 3");})
 			.style("fill", "none");
 
@@ -1366,6 +1374,10 @@ import * as d3 from '../node_modules/d3';
 			.enter()
 			.append("g");
 
+
+
+
+
 		pienode.selectAll("path")
 			.data(d3.pie().value(function(d) {return d.cancer;}))
 			.enter().append("path")
@@ -1381,7 +1393,8 @@ import * as d3 from '../node_modules/d3';
 					return opts.node_background;
 				}
 				return opts.diseases[i].colour;
-			});
+			})
+
 
 		// adopted in/out brackets
 		node.append("path")
@@ -1402,8 +1415,9 @@ import * as d3 from '../node_modules/d3';
 			.style("stroke", function (d) {
 				return d.data.age && d.data.yob && !d.data.exclude ? "#303030" : "grey";
 			})
-			.style("stroke-width", function (d) {
-				return ".1em";
+			.style("stroke-width", function(d){
+				return ".1em"
+
 			})
 			.style("stroke-dasharray", function (d) {return !d.data.exclude ? null : ("3, 3");})
 			.style("fill", "none");
@@ -1495,8 +1509,11 @@ import * as d3 from '../node_modules/d3';
 			.enter()
 			.insert("path", "g")
 			.attr("fill", "none")
-			.attr("stroke", "#000")
+			/*.attr("stroke", "#000")*/
 			.attr("shape-rendering", "auto")
+			.attr("stroke", function(d){
+				return "black";
+			})
 			.attr('d', function(d, i) {
 				var node1 = pedigree_util.getNodeByName(flattenNodes, d.mother.data.name);
 				var node2 = pedigree_util.getNodeByName(flattenNodes, d.father.data.name);
@@ -1566,8 +1583,9 @@ import * as d3 from '../node_modules/d3';
 				if(consanguity) {  // consanguinous, draw double line between partners
 					var cshift = 3;
 					var path2 = (clash ? draw_path(clash, dx, dy1, dy2, parent_node, cshift) : "");
-					return	"M" + x1 + "," + dy1 + path + "L" + x2 + "," + dy1 + "," +
-						"M" + x1 + "," + (dy1 - cshift) + path2 + "L" + x2 + "," + (dy1 - cshift) + divorce_path;
+					return	"M" + x1 + " " + dy1 + path + "L" + x2 + " " + dy1 + " " +
+						"M" + x1 + " " + (dy1 - cshift) + path2 + "L" + x2 + " " + (dy1 - cshift) + divorce_path;
+
 				}
 				return	"M" + x1 + "," + dy1 + path + "L" + x2 + "," + dy1 + divorce_path;
 			});
@@ -1967,7 +1985,7 @@ import * as d3 from '../node_modules/d3';
 		return hgt;
 	};
 
-	
+
 	// Add Participant ID Label
 	function addLabel(opts, node, size, fx, fy, ftext, class_label) {
 		node.filter(function (d) {

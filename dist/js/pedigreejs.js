@@ -1331,13 +1331,13 @@ import * as d3 from '../node_modules/d3';
 				return d.data.age && d.data.yob && !d.data.exclude ? "#303030" : "#4575B4";
 			})
 			.style("stroke-width", function(d){
-					if(par_id!== undefined && d.data.display_name=== par_id)
-					{return ".7em";}
-					else
-					{
-						return d.data.age && d.data.yob && !d.data.exclude ? ".4em" : ".3em";
-					}
-				})
+				if(par_id!== undefined && d.data.display_name=== par_id)
+				{return ".7em";}
+				else
+				{
+					return d.data.age && d.data.yob && !d.data.exclude ? ".4em" : ".3em";
+				}
+			})
 			.style("stroke-dasharray", function (d) {return !d.data.exclude ? null : ("3, 3");})
 			.style("fill", "none");
 
@@ -1992,7 +1992,7 @@ import * as d3 from '../node_modules/d3';
 			return !(d.data.hidden && !opts.DEBUG);
 		}).append("text")
 			.attr("class", class_label + ' ped_label' || "ped_label")
-			.attr("x", -80)
+			.attr("x", fx)
 			.attr("y",  -30)
 			//.attr("dy", size)
 			.attr("font-family", opts.font_family)

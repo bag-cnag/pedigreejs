@@ -2,6 +2,8 @@ import SearchComp from './SearchComp';
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom';
 import * as d3 from '../node_modules/d3';
+import templates from "./pages/template-page/configuration";
+
 
 // pedigree utils
 (function(utils, $, undefined) {
@@ -76,6 +78,8 @@ import * as d3 from '../node_modules/d3';
 	};
 	io.genetic_test = ['brca1', 'brca2', 'palb2', 'atm', 'chek2'];
 	io.pathology_tests = ['er', 'pr', 'her2', 'ck14', 'ck56'];
+
+
 
 
 	io.add = function(opts) {
@@ -3563,8 +3567,19 @@ import * as d3 from '../node_modules/d3';
 			width: ($(window).width() > 400 ? 600 : $(window).width()- 30)
 		});
 
-		//document.body.innerHTML +='<input type="text" id="myInput"  title="Type in a name">';
 
+        
+        //Select dropdown options with Template forms
+        var options = "";
+
+	    for (var i = 0; i < templates.length; i++) {
+              options += '<option value="' + templates[i]["key"]+ '">' + templates[i]["label"] + '</option>';
+        }
+	
+		$("myTempSelect").html(options);
+
+
+		//document.body.innerHTML +='<input type="text" id="myInput"  title="Type in a name">';
 
 		var table = "<table id='person_details' class='table'>";
 
@@ -3594,6 +3609,9 @@ import * as d3 from '../node_modules/d3';
 
 		table += "<tr id='row_yod'><td style='text-align:right'>Year Of Death</td><td><input class='form-control' type='number' id='id_yod' min='1800' max='2050' name='yod' style='width:7em' value="+
 			(d.data.yod ? d.data.yod : "")+"></td></tr>";
+		
+
+		table += "<tr id='row_template'><td style='text-align:right'>Template</td><td><select id='myTempSelect'></select></td></tr>";
 
 
 		//Fro now on probably for removing
@@ -3653,9 +3671,11 @@ import * as d3 from '../node_modules/d3';
 
 		table += "</table>";
 
-
 		$('#node_properties').html(table);
 		$('#node_properties').dialog('open');
+
+		$("#myTempSelect").html(options);
+
 
 		$(document).ready(function(){
 			$("#close_but").click(function(){

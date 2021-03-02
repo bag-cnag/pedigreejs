@@ -3684,6 +3684,12 @@ import templates from "./pages/template-page/configuration";
 		if (d.data.hasOwnProperty("template_name")){
 			document.getElementById("myTempSelect").value = d.data.template_name
 		}
+		
+		//Do not show for legacy data as template_name does not exist for those
+		if (!d.data.hasOwnProperty("template_name") && d.data.hasOwnProperty("display_name") && d.data.display_name!="" && d.data.display_name!=undefined){
+			document.getElementById("row_template").style.display = "None"
+		}
+
 
 
 		$(document).ready(function(){

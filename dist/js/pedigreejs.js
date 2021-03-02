@@ -2561,6 +2561,11 @@ import templates from "./pages/template-page/configuration";
 		var newdataset = ptree.copy_dataset(dataset);
 		var person = pedigree_util.getNodeByName(newdataset, name);
 
+		//Save form template selected
+		if (document.getElementById("myTempSelect") != undefined) {
+			person.template_name = document.getElementById("myTempSelect").value
+		}
+
 
 		if(!person) {
 			console.warn('person not found when saving details');
@@ -3570,14 +3575,12 @@ import templates from "./pages/template-page/configuration";
 
         
         //Select dropdown options with Template forms
-        var options = "";
+        var templ_options = "";
 
 	    for (var i = 0; i < templates.length; i++) {
-              options += '<option value="' + templates[i]["key"]+ '">' + templates[i]["label"] + '</option>';
+			templ_options += '<option value="' + templates[i]["key"]+ '">' + templates[i]["label"] + '</option>';
         }
 	
-		$("myTempSelect").html(options);
-
 
 		//document.body.innerHTML +='<input type="text" id="myInput"  title="Type in a name">';
 
@@ -3594,6 +3597,7 @@ import templates from "./pages/template-page/configuration";
 
 		table += "<tr><td style='text-align:right'>*Local ID</td><td><input class='form-control' type='text' id='id_external' name='external_name' value="+
 			(d.data.external_name ? d.data.external_name : "")+"></td></tr>";
+		
 
 		// alive status = 0; dead status = 1
 		table += '<tr><td style="text-align:left" colspan="2" id="id_status"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vital status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
@@ -3610,8 +3614,6 @@ import templates from "./pages/template-page/configuration";
 		table += "<tr id='row_yod'><td style='text-align:right'>Year Of Death</td><td><input class='form-control' type='number' id='id_yod' min='1800' max='2050' name='yod' style='width:7em' value="+
 			(d.data.yod ? d.data.yod : "")+"></td></tr>";
 		
-
-		table += "<tr id='row_template'><td style='text-align:right'>Template</td><td><select id='myTempSelect'></select></td></tr>";
 
 
 		//Fro now on probably for removing
@@ -3635,7 +3637,9 @@ import templates from "./pages/template-page/configuration";
 				capitaliseFirstLetter(attr.replace('_', ' '))+'</label>'
 		}
 
-
+        // form template
+		table += "<tr><td style='text-align:right'>Template</td><td><select class='form-control' id='myTempSelect' name='template_name' value="+
+		(d.data.template_name ? d.data.template_name : "")+"></select></td></tr>";
 
 
 		// switches
@@ -3647,7 +3651,7 @@ import templates from "./pages/template-page/configuration";
 		//
 		var exclude = ["children", "name", "parent_node", "top_level", "id", "noparents",
 			"level", "age", "sex", "status", "display_name", "mother", "father",
-			"yob",  "mztwin", "dztwin" , "yod", "affected", "unaffected", "unknown", "breast_cancer","external_name", "famid"];
+			"yob",  "mztwin", "dztwin" , "yod", "affected", "unaffected", "unknown", "breast_cancer","external_name", "template_name", "famid"];
 		$.merge(exclude, switches);
 
 		table += "<tr><td colspan='2' style='font-style:italic'>*Mandatory in case of creating a new entry </td></tr>";
@@ -3674,7 +3678,12 @@ import templates from "./pages/template-page/configuration";
 		$('#node_properties').html(table);
 		$('#node_properties').dialog('open');
 
-		$("#myTempSelect").html(options);
+		$("#myTempSelect").html(templ_options);
+
+		//Inject template value
+		if (d.data.hasOwnProperty("template_name")){
+			document.getElementById("myTempSelect").value = d.data.template_name
+		}
 
 
 		$(document).ready(function(){
@@ -3695,7 +3704,7 @@ import templates from "./pages/template-page/configuration";
 		);
 
 		//$('#id_name').closest('tr').toggle();
-		$('#node_properties input[type=radio], #node_properties input[type=checkbox], #node_properties input[type=text], #node_properties input[type=number]').change(function() {
+		$('#node_properties input[type=radio], #node_properties input[type=checkbox], #node_properties input[type=text], #node_properties input[type=number], #node_properties select').change(function() {
 			pedigree_form.save(opts);
 		});
 		pedigree_form.update(opts);

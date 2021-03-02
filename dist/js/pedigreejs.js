@@ -2,6 +2,8 @@ import SearchComp from './SearchComp';
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom';
 import * as d3 from '../node_modules/d3';
+import templates from "./pages/template-page/configuration";
+
 
 // pedigree utils
 (function(utils, $, undefined) {
@@ -76,6 +78,8 @@ import * as d3 from '../node_modules/d3';
 	};
 	io.genetic_test = ['brca1', 'brca2', 'palb2', 'atm', 'chek2'];
 	io.pathology_tests = ['er', 'pr', 'her2', 'ck14', 'ck56'];
+
+
 
 
 	io.add = function(opts) {
@@ -2557,6 +2561,11 @@ import * as d3 from '../node_modules/d3';
 		var newdataset = ptree.copy_dataset(dataset);
 		var person = pedigree_util.getNodeByName(newdataset, name);
 
+		//Save form template selected
+		if (document.getElementById("myTempSelect") != undefined) {
+			person.template_name = document.getElementById("myTempSelect").value
+		}
+
 
 		if(!person) {
 			console.warn('person not found when saving details');
@@ -3563,8 +3572,17 @@ import * as d3 from '../node_modules/d3';
 			width: ($(window).width() > 400 ? 600 : $(window).width()- 30)
 		});
 
-		//document.body.innerHTML +='<input type="text" id="myInput"  title="Type in a name">';
 
+        
+        //Select dropdown options with Template forms
+        var templ_options = "";
+
+	    for (var i = 0; i < templates.length; i++) {
+			templ_options += '<option value="' + templates[i]["key"]+ '">' + templates[i]["label"] + '</option>';
+        }
+	
+
+		//document.body.innerHTML +='<input type="text" id="myInput"  title="Type in a name">';
 
 		var table = "<table id='person_details' class='table'>";
 
@@ -3579,6 +3597,7 @@ import * as d3 from '../node_modules/d3';
 
 		table += "<tr><td style='text-align:right'>*Local ID</td><td><input class='form-control' type='text' id='id_external' name='external_name' value="+
 			(d.data.external_name ? d.data.external_name : "")+"></td></tr>";
+		
 
 		// alive status = 0; dead status = 1
 		table += '<tr><td style="text-align:left" colspan="2" id="id_status"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vital status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
@@ -3594,6 +3613,7 @@ import * as d3 from '../node_modules/d3';
 
 		table += "<tr id='row_yod'><td style='text-align:right'>Year Of Death</td><td><input class='form-control' type='number' id='id_yod' min='1800' max='2050' name='yod' style='width:7em' value="+
 			(d.data.yod ? d.data.yod : "")+"></td></tr>";
+		
 
 
 		//Fro now on probably for removing
@@ -3617,7 +3637,9 @@ import * as d3 from '../node_modules/d3';
 				capitaliseFirstLetter(attr.replace('_', ' '))+'</label>'
 		}
 
-
+        // form template
+		table += "<tr><td style='text-align:right'>Template</td><td><select class='form-control' id='myTempSelect' name='template_name' value="+
+		(d.data.template_name ? d.data.template_name : "")+"></select></td></tr>";
 
 
 		// switches
@@ -3629,7 +3651,7 @@ import * as d3 from '../node_modules/d3';
 		//
 		var exclude = ["children", "name", "parent_node", "top_level", "id", "noparents",
 			"level", "age", "sex", "status", "display_name", "mother", "father",
-			"yob",  "mztwin", "dztwin" , "yod", "affected", "unaffected", "unknown", "breast_cancer","external_name", "famid"];
+			"yob",  "mztwin", "dztwin" , "yod", "affected", "unaffected", "unknown", "breast_cancer","external_name", "template_name", "famid"];
 		$.merge(exclude, switches);
 
 		table += "<tr><td colspan='2' style='font-style:italic'>*Mandatory in case of creating a new entry </td></tr>";
@@ -3653,9 +3675,16 @@ import * as d3 from '../node_modules/d3';
 
 		table += "</table>";
 
-
 		$('#node_properties').html(table);
 		$('#node_properties').dialog('open');
+
+		$("#myTempSelect").html(templ_options);
+
+		//Inject template value
+		if (d.data.hasOwnProperty("template_name")){
+			document.getElementById("myTempSelect").value = d.data.template_name
+		}
+
 
 		$(document).ready(function(){
 			$("#close_but").click(function(){
@@ -3675,7 +3704,7 @@ import * as d3 from '../node_modules/d3';
 		);
 
 		//$('#id_name').closest('tr').toggle();
-		$('#node_properties input[type=radio], #node_properties input[type=checkbox], #node_properties input[type=text], #node_properties input[type=number]').change(function() {
+		$('#node_properties input[type=radio], #node_properties input[type=checkbox], #node_properties input[type=text], #node_properties input[type=number], #node_properties select').change(function() {
 			pedigree_form.save(opts);
 		});
 		pedigree_form.update(opts);

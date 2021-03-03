@@ -2386,11 +2386,11 @@ import templates from "./pages/template-page/configuration";
 		}
 		if(unconnected.length > 0) {
 			// check & warn only if this is a new split
-			if(ptree.unconnected(opts.dataset).length === 0) {
+			/*if(ptree.unconnected(opts.dataset).length === 0) {
 				console.error("individuals unconnected to pedigree ", unconnected);
 				utils.messages("Warning", "Deleting this will split the pedigree. Continue?", onDone, opts, dataset);
 				return;
-			}
+			}*/
 		}
 
 		if(onDone) {
@@ -2563,6 +2563,7 @@ import templates from "./pages/template-page/configuration";
 
 		//Save form template selected
 		if (document.getElementById("myTempSelect") != undefined) {
+			if (person != undefined)
 			person.template_name = document.getElementById("myTempSelect").value
 		}
 
@@ -3402,7 +3403,24 @@ import templates from "./pages/template-page/configuration";
 						opts.dataset = dataset;
 						ptree.rebuild(opts);
 					}
+
 					ptree.delete_node_dataset(newdataset, d.data, opts, onDone);
+					
+					//Unlink participant from family
+					if (d.data.hasOwnProperty("display_name") && d.data.display_name != ""  && d.data.display_name!=undefined){
+					   openEditDialog(opts, d);
+					   
+					   var unlink_but = document.getElementById("but_unlink_from_pedigree")
+					   var close_but = document.getElementById("close_but")
+
+					   if (unlink_but != undefined) 
+						  unlink_but.click()
+					   
+					   if (close_but != undefined)
+					   setTimeout(function(){  close_but.click(); }, 1000);
+					     
+					}
+
 				} else if(opt === 'addparents') {
 					newdataset = ptree.copy_dataset(opts.dataset);
 					opts.dataset = newdataset;

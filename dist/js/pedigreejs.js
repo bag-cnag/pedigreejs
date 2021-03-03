@@ -3638,7 +3638,7 @@ import templates from "./pages/template-page/configuration";
 		}
 
         // form template
-		table += "<tr><td style='text-align:right'>Template</td><td><select class='form-control' id='myTempSelect' name='template_name' value="+
+		table += "<tr id='row_template'><td style='text-align:right'>Template</td><td><select class='form-control' id='myTempSelect' name='template_name' value="+
 		(d.data.template_name ? d.data.template_name : "")+"></select></td></tr>";
 
 
@@ -3687,7 +3687,8 @@ import templates from "./pages/template-page/configuration";
 		
 		//Do not show for legacy data as template_name does not exist for those
 		if (!d.data.hasOwnProperty("template_name") && d.data.hasOwnProperty("display_name") && d.data.display_name!="" && d.data.display_name!=undefined){
-			document.getElementById("row_template").style.display = "None"
+			if (document.getElementById("row_template") != undefined)
+			   document.getElementById("row_template").style.display = "None"
 		}
 
 

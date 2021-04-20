@@ -2568,6 +2568,13 @@ import templates from "./pages/template-page/configuration";
 		}
 
 
+		//Save comments textarea
+		if (document.getElementById("id_comments") != undefined) {
+			if (person != undefined)
+			person.comments = document.getElementById("id_comments").value
+		}
+
+
 		if(!person) {
 			console.warn('person not found when saving details');
 			return;
@@ -3658,6 +3665,10 @@ import templates from "./pages/template-page/configuration";
         // form template
 		table += "<tr id='row_template'><td style='text-align:right'>Template</td><td><select class='form-control' id='myTempSelect' name='template_name' value="+
 		(d.data.template_name ? d.data.template_name : "")+"></select></td></tr>";
+		
+		//comments
+		table += "<tr><td style='text-align:right'>Comments</td><td><textarea rows='2' cols='50' class='form-control' id='id_comments' name='comments' value="+
+			(d.data.comments ? d.data.comments : "")+"></textarea></td></tr>";
 
 
 		// switches
@@ -3669,7 +3680,7 @@ import templates from "./pages/template-page/configuration";
 		//
 		var exclude = ["children", "name", "parent_node", "top_level", "id", "noparents",
 			"level", "age", "sex", "status", "display_name", "mother", "father",
-			"yob",  "mztwin", "dztwin" , "yod", "affected", "unaffected", "unknown", "breast_cancer","external_name", "template_name", "famid"];
+			"yob",  "mztwin", "dztwin" , "yod", "affected", "unaffected", "unknown", "breast_cancer","external_name", "template_name", "comments", "famid"];
 		$.merge(exclude, switches);
 
 		table += "<tr><td colspan='2' style='font-style:italic'>*Mandatory in case of creating a new entry </td></tr>";
@@ -3697,6 +3708,11 @@ import templates from "./pages/template-page/configuration";
 		$('#node_properties').dialog('open');
 
 		$("#myTempSelect").html(templ_options);
+
+		//Inject comments
+		if (d.data.hasOwnProperty("comments")){
+			document.getElementById("id_comments").value = d.data.comments
+		}
 
 		//Inject template value
 		if (d.data.hasOwnProperty("template_name")){
@@ -3729,7 +3745,7 @@ import templates from "./pages/template-page/configuration";
 		);
 
 		//$('#id_name').closest('tr').toggle();
-		$('#node_properties input[type=radio], #node_properties input[type=checkbox], #node_properties input[type=text], #node_properties input[type=number], #node_properties select').change(function() {
+		$('#node_properties input[type=radio], #node_properties input[type=checkbox], #node_properties input[type=text], #node_properties input[type=number], #node_properties select, #node_properties textarea').change(function() {
 			pedigree_form.save(opts);
 		});
 		pedigree_form.update(opts);

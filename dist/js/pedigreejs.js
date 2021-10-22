@@ -3740,7 +3740,7 @@ import templates from "./pages/template-page/configuration";
 		}
 
 		ReactDOM.render(
-			<SearchComp   savefunction={call_pedigree} />,
+			<SearchComp   savefunction={call_pedigree} dataset={opts.dataset}/>,
 			document.getElementById('search_comp')
 		);
 

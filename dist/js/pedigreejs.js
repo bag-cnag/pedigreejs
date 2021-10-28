@@ -1672,7 +1672,7 @@ import templates from "./pages/template-page/configuration";
 
 		// draw proband arrow
 		var probandIdx  = pedigree_util.getProbandIndex(opts.dataset);
-		if(probandIdx) {
+		if(probandIdx != undefined) {
 			var probandNode = pedigree_util.getNodeByName(flattenNodes, opts.dataset[probandIdx].name);
 
 			ped.append("svg:defs").append("svg:marker")    // arrow head

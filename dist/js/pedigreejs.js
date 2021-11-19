@@ -3632,7 +3632,7 @@ import templates from "./pages/template-page/configuration";
 		$("#id_status input[value='"+d.data.status+"']").prop('checked', true);
 
 
-		table += "<tr><td style='text-align:right'>*Year Of Birth</td><td><input class='form-control' type='number' id='id_yob' min='1800' max='2050' name='yob' style='width:7em' value="+
+		table += "<tr><td style='text-align:right'>Year Of Birth</td><td><input class='form-control' type='number' id='id_yob' min='1800' max='2050' name='yob' style='width:7em' value="+
 			(d.data.yob ? d.data.yob : "")+"></td></tr>";
 
 

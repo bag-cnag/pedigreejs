@@ -1455,9 +1455,11 @@ import templates from "./pages/template-page/configuration";
 		var font_size = parseInt(getPx(opts.font_size)) + 4;
 		// display label defined in opts.labels e.g. alleles/genotype data
 		// NOT SURE WE NEED THIS; COMMENTED FOR NOW. IT WOULD display label defined in opts.labels e.g. alleles/genotype data
-		/*for(var ilab=0; ilab<opts.labels.length; ilab++) {
+		for(var ilab=0; ilab<opts.labels.length; ilab++) {
 			var label = opts.labels[ilab];
-			addLabel(opts, node, ".25em", -(0.7 * opts.symbol_size),
+
+			if (label === 'stillbirth') {
+			addLabel(opts, node, ".25em", -(1.1 * opts.symbol_size),
 				function(d) {
 					if(!d.data[label])
 						return;
@@ -1466,7 +1468,7 @@ import templates from "./pages/template-page/configuration";
 				},
 				function(d) {
 					if(d.data[label]) {
-						if(label === 'alleles') {
+						/*if(label === 'alleles') {
 							var alleles = "";
 							var vars = d.data.alleles.split(';');
 							for(var ivar = 0;ivar < vars.length;ivar++) {
@@ -1477,11 +1479,17 @@ import templates from "./pages/template-page/configuration";
 							return d.data[label] +'y';
 						} else if(label === 'stillbirth') {
 							return "SB";
+						}*/
+
+						if(label === 'stillbirth') {
+							return "[SB]";
 						}
+
 						return d.data[label];
 					}
 				}, 'indi_details');
-		}*/
+			}
+		}
 
 		// individuals disease details
 		for(var i=0;i<opts.diseases.length; i++) {
@@ -3662,6 +3670,26 @@ import templates from "./pages/template-page/configuration";
 				capitaliseFirstLetter(attr.replace('_', ' '))+'</label>'
 		}
 
+		// reproduction
+
+		//default values
+		//var switches = ["adopted_in", "adopted_out", "miscarriage", "stillbirth", "termination"];
+		
+		//min values
+		var switches = ["miscarriage", "stillbirth"];
+
+			table += '<tr><td style="text-align:left" colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Reproduction &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+			for(var iswitch=0; iswitch<switches.length; iswitch++){
+				var attr = switches[iswitch];
+				if(iswitch === 2)
+					table += '</td></tr><tr><td colspan="2">';
+				table += 
+				 '<label class="checkbox-inline"><input type="checkbox" id="id_'+attr +
+					'" name="'+attr+'" value="0" '+(d.data[attr] ? "checked" : "")+'>&thinsp;' +
+					capitaliseFirstLetter(attr.replace('_', ' '))+'</label>'
+			}
+
+
         // form template
 		table += "<tr id='row_template'><td style='text-align:right'>Template</td><td><select class='form-control' id='myTempSelect' name='template_name' value="+
 		(d.data.template_name ? d.data.template_name : "")+"></select></td></tr>";
@@ -3670,9 +3698,6 @@ import templates from "./pages/template-page/configuration";
 		table += "<tr><td style='text-align:right'>Comments</td><td><textarea rows='2' cols='50' class='form-control' id='id_comments' name='comments' value="+
 			(d.data.comments ? d.data.comments : "")+"></textarea></td></tr>";
 
-
-		// switches
-		var switches = ["adopted_in", "adopted_out", "miscarriage", "stillbirth", "termination"];
 
 
 		table += '</td></tr>';

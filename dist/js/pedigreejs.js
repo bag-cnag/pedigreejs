@@ -2000,12 +2000,17 @@ import templates from "./pages/template-page/configuration";
 
 	// Add Participant ID Label
 	function addLabel(opts, node, size, fx, fy, ftext, class_label) {
+		
+		//For display name (PS ID)
+		if (class_label === undefined)
+		   fy  = -34;
+
 		node.filter(function (d) {
 			return !(d.data.hidden && !opts.DEBUG);
 		}).append("text")
 			.attr("class", class_label + ' ped_label' || "ped_label")
 			.attr("x", fx)
-			.attr("y",  -30)
+			.attr("y", fy)
 			//.attr("dy", size)
 			.attr("font-family", opts.font_family)
 			.attr("font-size", opts.font_size)

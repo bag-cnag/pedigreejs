@@ -76,9 +76,15 @@ import templates from "./pages/template-page/configuration";
 		'prostate_cancer': 'prostate_cancer_diagnosis_age',
 		'pancreatic_cancer': 'pancreatic_cancer_diagnosis_age'
 	};
-	io.genetic_test = ['brca1', 'brca2', 'palb2', 'atm', 'chek2'];
-	io.pathology_tests = ['er', 'pr', 'her2', 'ck14', 'ck56'];
 
+	//Version 1
+	io.genetic_test = ['brca1', 'brca2', 'palb2', 'atm', 'chek2'];
+
+	//Version 2
+	//io.genetic_test = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'bard1', 'rad51d', 'rad51c', 'brip1']
+
+
+	io.pathology_tests = ['er', 'pr', 'her2', 'ck14', 'ck56'];
 
 
 
@@ -1213,7 +1219,8 @@ import templates from "./pages/template-page/configuration";
 				{'type': 'ovarian_cancer', 'colour': '#4DAA4D'},
 				{'type': 'pancreatic_cancer', 'colour': '#4289BA'},
 				{'type': 'prostate_cancer', 'colour': '#D5494A'}],
-			labels: ['stillbirth', 'age', 'yob', 'alleles'],
+			//labels: ['stillbirth', 'age', 'yob', 'alleles','brca1_gene_test','brca2_gene_test', 'palb2_gene_test', 'chek2_gene_test', 'atm_gene_test', 'bard1_gene_test', 'rad51d_gene_test', 'rad51c_gene_test', 'rad51d_gene_test', 'brip1_gene_test','ck14_bc_pathology','ck56_bc_pathology','er_bc_pathology','her2_bc_pathology','pr_bc_pathology'],
+			labels: ['stillbirth', 'yob', 'alleles','ck14_bc_pathology','ck56_bc_pathology','er_bc_pathology','her2_bc_pathology','pr_bc_pathology'],
 			font_size: '.75em',
 			font_family: 'Helvetica',
 			font_weight: 700,
@@ -1455,10 +1462,13 @@ import templates from "./pages/template-page/configuration";
 		var font_size = parseInt(getPx(opts.font_size)) + 4;
 		// display label defined in opts.labels e.g. alleles/genotype data
 		// NOT SURE WE NEED THIS; COMMENTED FOR NOW. IT WOULD display label defined in opts.labels e.g. alleles/genotype data
+
 		for(var ilab=0; ilab<opts.labels.length; ilab++) {
+
+			let txt = "";
+
 			var label = opts.labels[ilab];
 
-			if (label === 'stillbirth') {
 			addLabel(opts, node, ".25em", -(1.1 * opts.symbol_size),
 				function(d) {
 					if(!d.data[label])
@@ -1468,27 +1478,51 @@ import templates from "./pages/template-page/configuration";
 				},
 				function(d) {
 					if(d.data[label]) {
-						/*if(label === 'alleles') {
+
+						if(label === 'alleles') {
 							var alleles = "";
 							var vars = d.data.alleles.split(';');
 							for(var ivar = 0;ivar < vars.length;ivar++) {
 								if(vars[ivar] !== "") alleles += vars[ivar] + ';';
 							}
 							return alleles;
-						} else if(label === 'age') {
+						} 
+						else if(label === 'age') {
 							return d.data[label] +'y';
-						} else if(label === 'stillbirth') {
+						} 
+						
+						else if(label === 'stillbirth') {
 							return "SB";
-						}*/
-
-						if(label === 'stillbirth') {
-							return "[SB]";
 						}
+						
+						//Gene test, do not display for now as they go to the PS form
+						/*else if(label.match("_gene_test$")) {
+							let r = d.data[label]['result'].toUpperCase();
+							//let t = d.data[this_label]['type'];
+							if(r !== "-") {
+								txt += label.replace('_gene_test', '').toUpperCase()
+								txt += (r === 'P' ? '+ ' : (r === 'N' ? '- ' : ' '));
+							}
+
+							return txt;
+						}*/
+						
+						//Pathology
+						else if(label.match("_bc_pathology$")) {
+							let r = d.data[label].toUpperCase();
+							txt += label.replace('_bc_pathology', '').toUpperCase()
+							txt += (r === 'P' ? '+ ' : (r === 'N' ? '- ' : ' '));
+
+							return txt;
+
+						}
+
+						//if(txt !== "") return txt;
 
 						return d.data[label];
 					}
 				}, 'indi_details');
-			}
+			
 		}
 
 		// individuals disease details

@@ -3798,13 +3798,31 @@ import templates from "./pages/template-page/configuration";
 		});
 
 
-		function call_pedigree () {
+		function call_pedigree() {
 			pedigree_form.save(opts);
 			return opts
 		}
 
+		function get_patients(){
+			var parent_elem;
+			var divChildren;
+			var pars_array = [];
+
+			parent_elem = document.getElementById('jq_patients_to_search')
+			
+			if (parent_elem !== null){
+			  divChildren = parent_elem.childNodes;
+			  for (var i=0; i<divChildren.length; i++) {
+				var obj = {report_id: divChildren[i].textContent}
+				pars_array.push(obj)
+			  }
+		     }
+
+			return pars_array
+		}
+
 		ReactDOM.render(
-			<SearchComp   savefunction={call_pedigree} dataset={opts.dataset}/>,
+			<SearchComp  patientsSearch={get_patients} savefunction={call_pedigree} dataset={opts.dataset}/>,
 			document.getElementById('search_comp')
 		);
 

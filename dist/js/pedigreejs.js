@@ -3457,21 +3457,22 @@ import templates from "./pages/template-page/configuration";
 						opts.dataset = dataset;
 						ptree.rebuild(opts);
 					}
-
-					ptree.delete_node_dataset(newdataset, d.data, opts, onDone);
+                    
+					if (!d.data.proband)
+					   ptree.delete_node_dataset(newdataset, d.data, opts, onDone);
 					
 					//Unlink participant from family
 					if (d.data.hasOwnProperty("display_name") && d.data.display_name != ""  && d.data.display_name!=undefined){
-					   openEditDialog(opts, d);
+					   openEditDialog(opts, d, true);
 					   
 					   var unlink_but = document.getElementById("but_unlink_from_pedigree")
-					   var close_but = document.getElementById("close_but")
+					   //var close_but = document.getElementById("close_but")
 
 					   if (unlink_but != undefined) 
-						  unlink_but.click()
+					      unlink_but.click()
 					   
-					   if (close_but != undefined)
-					   setTimeout(function(){  close_but.click(); }, 1000);
+					   //if (close_but != undefined)
+					   //setTimeout(function(){  close_but.click(); }, 1000);
 					     
 					}
 
@@ -3637,12 +3638,21 @@ import templates from "./pages/template-page/configuration";
 
 
 	// if opt.edit is set true (rather than given a function) this is called to edit node attributes
-	function openEditDialog(opts, d) {
+	function openEditDialog(opts, d, minimized=false) {
 		$('#node_properties').dialog({
 			autoOpen: false,
 			title: "Add pedigree info and/or create a new entry",
 			width: ($(window).width() > 400 ? 600 : $(window).width()- 30)
 		});
+
+	    $('#node_properties').dialog('open');
+
+	    if (minimized) {
+	       $('#node_properties').parents(".ui-dialog").hide();
+	    }
+		else{
+		   $('#node_properties').parents(".ui-dialog").show();
+		}
 
 
         

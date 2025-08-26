@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom';
 import * as d3 from '../node_modules/d3';
 import templates from "./pages/template-page/configuration";
+import jQuery from "jquery";
 
 
 // pedigree utils

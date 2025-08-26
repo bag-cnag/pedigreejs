@@ -3,9 +3,20 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom';
 import * as d3 from '../node_modules/d3';
 import templates from "./pages/template-page/configuration";
-import jQuery from "jquery";
 
+// Ensure jQuery is available before proceeding
+(function ensureJQuery() {
+    if (typeof jQuery === 'undefined') {
+        console.warn('jQuery not available, waiting for it to load...');
+        setTimeout(ensureJQuery, 100);
+        return;
+    }
+    
+    // jQuery is available, proceed with initialization
+    initializePedigree();
+})();
 
+function initializePedigree() {
 // pedigree utils
 (function(utils, $, undefined) {
 
@@ -3870,5 +3881,7 @@ import jQuery from "jquery";
 
 
 }(window.widgets = window.widgets || {}, jQuery));
+
+} // Close initializePedigree function
 
 //# sourceMappingURL=pedigreejs.js.map

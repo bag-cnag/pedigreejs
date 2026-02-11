@@ -1,8 +1,8 @@
-import SearchComp from './SearchComp';
+//import SearchComp from './SearchComp';
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom';
-import * as d3 from '../node_modules/d3';
-import templates from "./pages/template-page/configuration";
+import * as d3 from '../../../d3';
+//import templates from "./pages/template-page/configuration";
 
 
 // pedigree utils
@@ -2063,7 +2063,7 @@ import templates from "./pages/template-page/configuration";
 		}
 
 		try {
-			templates.update(opts);
+			//templates.update(opts);
 		} catch(e) {
 			// templates not declared
 		}
@@ -3659,9 +3659,9 @@ import templates from "./pages/template-page/configuration";
         //Select dropdown options with Template forms
         var templ_options = "";
 
-	    for (var i = 0; i < templates.length; i++) {
-			templ_options += '<option value="' + templates[i]["key"]+ '">' + templates[i]["label"] + '</option>';
-        }
+	    //for (var i = 0; i < templates.length; i++) {
+		//	templ_options += '<option value="' + templates[i]["key"]+ '">' + templates[i]["label"] + '</option>';
+       // }
 	
 
 		//document.body.innerHTML +='<input type="text" id="myInput"  title="Type in a name">';
@@ -3831,10 +3831,10 @@ import templates from "./pages/template-page/configuration";
 			return pars_array
 		}
 
-		ReactDOM.render(
-			<SearchComp  patientsSearch={get_patients} savefunction={call_pedigree} dataset={opts.dataset}/>,
-			document.getElementById('search_comp')
-		);
+		//ReactDOM.render(
+	    //		<SearchComp  patientsSearch={get_patients} savefunction={call_pedigree} dataset={opts.dataset}/>,
+	    //		document.getElementById('search_comp')
+	    //	);
 
 		//$('#id_name').closest('tr').toggle();
 		$('#node_properties input[type=radio], #node_properties input[type=checkbox], #node_properties input[type=text], #node_properties input[type=number], #node_properties select, #node_properties textarea').change(function() {
